@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<title>More headlines</title>
+<style>
+  html,body{margin:0;background:#ffffff}
+  .wrap{max-width:640px;margin:0 auto;padding:16px;
+        font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+        color:#1a1a1a;line-height:1.5;font-size:15px}
+  .note{font-size:14px;color:#6b7280;margin:8px 0}
+</style></head>
+<body><div class="wrap">
+<p class="note" id="out"></p>
+<noscript><p class="note">This page needs JavaScript.</p></noscript>
+</div>
+<script>
+var P={"code": "uk", "title": "UK | Daily Reads", "runs": ["2026-09-29-2e9d07d4", "2026-09-29-47dbf032", "2026-09-29-ab1849d8", "2026-09-30-14a9b640", "2026-09-30-bd8e747e", "2026-09-30-e623120a", "2026-10-01-08d12309", "2026-10-01-5335c2fb", "2026-10-01-5c04d9ef", "2026-10-02-52f4bcbe", "2026-10-03-1d4e766d", "2026-10-04-4d748f8d", "2026-10-04-ea41166f", "2026-10-05-4b1b4657", "2026-10-05-57cc5536", "2026-10-05-7b1035e1", "2026-10-06-2e0c7167", "2026-10-06-cd5cb0c7", "2026-10-07-f8c5d2c6", "2026-10-08-4d7e2894", "2026-10-09-8855a91d"], "keep": {"uk": 14, "ea": 14}, "keep_default": 14};
+function params(){
+  var raw=location.search.replace(/^\?/,"")||location.hash.replace(/^#/,""),p={};
+  raw.split("&").forEach(function(kv){if(!kv)return;var i=kv.indexOf("=");
+    try{p[decodeURIComponent(i<0?kv:kv.slice(0,i))]=i<0?"":decodeURIComponent(kv.slice(i+1));}catch(e){}});
+  return p;}
+function expired(code,day){
+  var k=P.keep[code]||P.keep_default,d=new Date(day+"T00:00:00"),t=new Date();
+  t=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  return isNaN(d)||Math.round((t-d)/864e5)>k;}
+function say(s){document.getElementById("out").textContent=s;}
+function gone(code){return "This edition has expired: the list is kept for "+(P.keep[code]||P.keep_default)+" days.";}
+(function(){
+  var p=params(),r=p.r||"";
+  if(/^\d{4}-\d{2}-\d{2}-[0-9a-f]{8}$/.test(r)){
+    if(P.runs.indexOf(r)>=0){location.replace(P.code+"/"+r+".html"+location.search+location.hash);return;}
+    say(expired(P.code,r.slice(0,10))?gone(P.code):"This edition is no longer available.");return;}
+  say("Open this page from the link in the latest "+P.title+" email.");
+})();
+</script></body></html>
