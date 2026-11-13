@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light">
+<title>More headlines</title>
+<style>
+  html,body{margin:0;background:#ffffff}
+  .wrap{max-width:640px;margin:0 auto;padding:16px;
+        font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+        color:#1a1a1a;line-height:1.5;font-size:15px}
+  .note{font-size:14px;color:#6b7280;margin:8px 0}
+</style></head>
+<body><div class="wrap">
+<p class="note" id="out"></p>
+<noscript><p class="note">This page needs JavaScript.</p></noscript>
+</div>
+<script>
+var P={"keep": {"uk": 14, "ea": 14}, "keep_default": 14};
+function params(){
+  var raw=location.search.replace(/^\?/,"")||location.hash.replace(/^#/,""),p={};
+  raw.split("&").forEach(function(kv){if(!kv)return;var i=kv.indexOf("=");
+    try{p[decodeURIComponent(i<0?kv:kv.slice(0,i))]=i<0?"":decodeURIComponent(kv.slice(i+1));}catch(e){}});
+  return p;}
+function expired(code,day){
+  var k=P.keep[code]||P.keep_default,d=new Date(day+"T00:00:00"),t=new Date();
+  t=new Date(t.getFullYear(),t.getMonth(),t.getDate());
+  return isNaN(d)||Math.round((t-d)/864e5)>k;}
+function say(s){document.getElementById("out").textContent=s;}
+function gone(code){return "This edition has expired: the list is kept for "+(P.keep[code]||P.keep_default)+" days.";}
+(function(){
+  var m=location.pathname.match(/\/([a-z]+)\/(\d{4}-\d{2}-\d{2})-[0-9a-f]{8}\.html$/);
+  if(!m){say("Page not found.");return;}
+  if(expired(m[1],m[2])){say(gone(m[1]));return;}
+  say("This list is updating. If you just received the email, reload in a minute.");
+  var n=0,t=setInterval(function(){
+    if(++n>18){clearInterval(t);return;}
+    fetch(location.pathname+"?probe="+Date.now(),{cache:"no-store"}).then(function(x){
+      if(x.ok){clearInterval(t);
+        var q=location.search?location.search+"&":"?";
+        location.replace(location.pathname+q+"v="+Date.now()+location.hash);}
+    }).catch(function(){});
+  },10000);
+})();
+</script></body></html>
